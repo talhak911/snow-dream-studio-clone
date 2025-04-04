@@ -12,7 +12,7 @@ import NavBar from "@/components/navbar/Navbar";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
-  const logoRef = useRef(null);
+  const logoRef = useRef<HTMLDivElement>(null);
   const socialLinksRef = useRef(null);
   const videoRef = useRef(null);
   const videoRef2 = useRef(null);
@@ -32,9 +32,13 @@ export default function Home() {
         onUpdate: (self) => {
           const progress = self.progress;
           if (progress > 0.5) {
-            logoRef.current.classList.add("text-primary"); // Apply color change
+            if (logoRef.current) {
+              logoRef.current.classList.add("text-primary"); // Apply color change
+            }
           } else {
-            logoRef.current.classList.remove("text-primary"); // Remove color
+            if (logoRef.current) {
+              logoRef.current.classList.remove("text-primary"); // Remove color
+            }
           }
         },
       },
