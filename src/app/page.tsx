@@ -316,12 +316,12 @@ export default function Home() {
       </div>
 
       <div className="min-h-screen py-9 px-14 backdrop-blur-sm flex z-50 items-center justify-center">
-        <div className="w-1/2"></div>
+        <div className="sm:w-1/2 w-0"></div>
 
-        <div className="w-[665px] border-l border-[#373737] pl-5 py-8">
+        <div className="w-full md:w-[665px] md:border-l border-[#373737] pl-5 py-8">
           <Marquee pauseOnHover>
             <div
-              className="mt-14 flex items-center justify-between"
+              className="mt-14 flex items-center overflow-hidden justify-between"
               role="region"
             >
               {Array.from([1, 2, 3, 4, 5]).map((_, index) => (
@@ -330,7 +330,7 @@ export default function Home() {
                   className="w-full px-[30px] pb-10 xl:px-10"
                   aria-label={`Project ${index + 1}`}
                 >
-                  <div className="relative w-[400px] h-[309px] overflow-hidden">
+                  <div className="relative w-[200px] sm:w-[400px] h-[309px] overflow-hidden">
                     <Image
                       src={"/SDS.webp"}
                       alt=""
@@ -343,7 +343,7 @@ export default function Home() {
                   <h3 className="text-white pt-3 text-xl font-semibold">
                     Try Boosting
                   </h3>
-                  <p className="text-[#7C7C7C] pt-1 line-clamp-1">
+                  <p className="text-[#7C7C7C] pt-1">
                     ZOA provides a complete solution for veterinary ...
                   </p>
                 </div>
@@ -351,7 +351,7 @@ export default function Home() {
             </div>
           </Marquee>
           <div className="pt-5">
-            <h2 className="text-white w-[665px] -mt-0">
+            <h2 className="text-white w-auto  md:w-[665px] -mt-0">
               <strong className="text-primary">
                 Building digital strategies
               </strong>{" "}

@@ -28,7 +28,7 @@ const NavBar: React.FC = () => {
 
       {
         <div
-          className={`fixed top-0 left-0 z-[9999] w-full h-screen bg-secondary flex flex-col items-center justify-center transition-transform duration-500 ease-in-out ${
+          className={`fixed top-0 left-0 z-[9999] w-full h-[100dvh] bg-secondary flex flex-col items-center justify-center transition-transform duration-500 ease-in-out ${
             isOpen ? "translate-y-0" : "-translate-y-full"
           }`}
         >
@@ -55,7 +55,7 @@ const NavBar: React.FC = () => {
           </div>
 
           {/* Navigation Links */}
-          <nav className="flex ">
+          <nav className="flex sm:flex-row flex-col items-center justify-center">
             <div className="bg-primary text-white px-12 py-3 text-lg font-bold">
               Home
             </div>
@@ -69,7 +69,7 @@ const NavBar: React.FC = () => {
               "Blogs",
             ].map((item, index) => (
               <React.Fragment key={index}>
-                <div className="h-10 w-px bg-primary mx-2"></div>
+                <div className="h-10 w-px bg-primary mx-2 hidden sm:block"></div>
                 <div className="text-white text-lg px-6 py-3 hover:bg-primary cursor-pointer">
                   {item}
                 </div>
