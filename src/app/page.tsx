@@ -1,25 +1,28 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import LogoIcon from "../components/icons/logo";
 import { useGSAP } from "@gsap/react";
-import { ImageOptimizerCache } from "next/dist/server/image-optimizer";
 import Marquee from "react-fast-marquee";
+import { WELCOMES } from "@/constants/constants";
+import NavBar from "@/components/navbar/Navbar";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
   const logoRef = useRef(null);
+  const socialLinksRef = useRef(null);
   const videoRef = useRef(null);
+  const videoRef2 = useRef(null);
+  const videoRef2View = useRef(null);
+  const videoContainerRef = useRef(null);
   const section2Ref = useRef(null);
 
   useGSAP(() => {
-    // Make sure the logo element exists before setting up animations
     if (!logoRef.current) return;
 
-    // Logo animation timeline
     const logoTl = gsap.timeline({
       scrollTrigger: {
         trigger: "body",
@@ -37,6 +40,57 @@ export default function Home() {
       },
     });
 
+    if (videoRef2.current && videoContainerRef && videoRef2View.current) {
+      // Set initial state
+      gsap.set(videoRef2.current, {
+        width: "50vw",
+        height: "50vh",
+        borderRadius: "8px",
+      });
+
+      gsap.to(videoRef2.current, {
+        width: "100vw",
+        height: "100vh",
+        borderRadius: "0",
+        scrollTrigger: {
+          trigger: videoContainerRef.current,
+          start: "top bottom",
+          end: "center center",
+          scrub: true,
+          markers: false,
+        },
+        ease: "power2.inOut",
+      });
+
+      gsap.to(".hide", {
+        opacity: 0,
+        y: -20,
+        duration: 0.5,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: section2Ref.current,
+          start: "top top",
+          end: "center bottom",
+          scrub: true,
+          toggleActions: "play none none reverse",
+        },
+      });
+
+      gsap.to(videoRef2View.current, {
+        width: "100vw",
+        height: "100vh",
+        borderRadius: "0",
+        scrollTrigger: {
+          trigger: videoRef2.current,
+          start: "center bottom",
+          end: "center center",
+          scrub: true,
+          markers: false,
+        },
+        ease: "power2.inOut",
+      });
+    }
+
     // Animation for the logo
     logoTl.fromTo(
       logoRef.current,
@@ -53,27 +107,25 @@ export default function Home() {
       }
     );
 
-    // Section 2 animation - make it expand from a small box to full screen
+    // Section 2
     if (section2Ref.current) {
       const section2Tl = gsap.timeline({
         scrollTrigger: {
           trigger: section2Ref.current,
-          start: "top bottom", // Start animation when the top of section2 hits the bottom of viewport
-          end: "top top", // End animation when the top of section2 reaches the top of viewport
+          start: "top bottom",
+          end: "top top",
           scrub: true,
-          markers: false, // Set to true for debugging
+          markers: false,
         },
       });
 
-      // Initial state: small box in the center
       gsap.set(section2Ref.current, {
-        width: "90%",
+        width: "80%",
         height: "90%",
-        x: "50%",
+        x: "20%",
         y: "50%",
       });
 
-      // Animation to expand to full screen
       section2Tl.to(section2Ref.current, {
         width: "100%",
         height: "100vh",
@@ -87,18 +139,30 @@ export default function Home() {
     }
 
     return () => {
-      // Clean up ScrollTrigger when component unmounts
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, []);
 
   return (
-    <div className="relative min-h-screen">
+    <div className="relative min-h-screen bg-secondary/90">
       {/* Fixed Logo */}
-      <div className="fixed top-0 left-10 z-50 p-4">
-        <div ref={logoRef} className="">
-          <LogoIcon className="size-12  lg:text-secondary relative lg:size-[260px]" />
+      <div className="fixed flex top-0 left-10 z-50 p-4 px-8">
+        <div ref={logoRef} className="w-fit">
+          <LogoIcon className="size-12 lg:text-secondary relative lg:size-[260px]" />
         </div>
+        <div className="w-full relative py-4 mr-10">
+          <Marquee loop={0}>
+            <div className="flex items-center justify-between" role="region">
+              {WELCOMES.map((item) => (
+                <div key={item}>
+                  <div className="text-white px-[3vh] text-[1.8vh]">{item}</div>
+                </div>
+              ))}
+            </div>
+          </Marquee>
+          <div className="h-1 top-6 mr-10 w-full bg-pink-500 absolute" />
+        </div>
+        <NavBar />
       </div>
 
       {/* Background Video - Using ref to access video element */}
@@ -115,8 +179,7 @@ export default function Home() {
         Your browser does not support the video tag.
       </video>
 
-      {/* Social Links*/}
-      <div className="lg:flex hidden flex-col justify-between space-y-4 fixed z-50 left-14 top-1/2">
+      <div className=" hide lg:flex hidden flex-col justify-between space-y-4 fixed z-50 left-14 top-1/2">
         <div style={{ position: "relative", transform: "none" }}>
           <a
             className="group border border-[#626262] hover:border-white w-8 h-8 flex justify-center items-center bg-secondary hover:bg-primary transition-all ease-out duration-500"
@@ -168,18 +231,15 @@ export default function Home() {
               xmlns="http://www.w3.org/2000/svg"
             >
               <g clip-path="url(#clip0_120_98)">
-                {" "}
                 <path
                   className="fill-[#626262] group-hover:fill-white transition-all ease-out duration-500"
                   d="M11.8616 8.46864L19.147 0H17.4206L11.0947 7.3532L6.04225 0H0.214844L7.85515 11.1193L0.214844 20H1.94134L8.62162 12.2348L13.9574 20H19.7848L11.8612 8.46864H11.8616ZM9.49695 11.2173L8.72283 10.1101L2.56342 1.29967H5.21521L10.1859 8.40994L10.9601 9.51718L17.4214 18.7594H14.7696L9.49695 11.2177V11.2173Z"
-                ></path>{" "}
-              </g>{" "}
+                ></path>
+              </g>
               <defs>
-                {" "}
                 <clipPath id="clip0_120_98">
-                  {" "}
                   <rect width="20" height="20" fill="white"></rect>{" "}
-                </clipPath>{" "}
+                </clipPath>
               </defs>
             </svg>
           </a>
@@ -232,7 +292,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="w-[62px] fixed top-2/3 z-50 left-[20%] -translate-x-1/2 lg:block hidden">
+      <div className="hide w-[62px] fixed top-2/3 z-50 left-[20%] -translate-x-1/2 lg:block hidden">
         <p className="text-[11px] whitespace-nowrap pb-1 text-white font-light tracking-wide">
           Scroll Down
         </p>
@@ -251,7 +311,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="min-h-screen   bg-secondary/90 py-9 px-14 backdrop-blur-sm flex z-50 items-center justify-center">
+      <div className="min-h-screen py-9 px-14 backdrop-blur-sm flex z-50 items-center justify-center">
         <div className="w-1/2"></div>
 
         <div className="w-[665px] border-l border-[#373737] pl-5 py-8">
@@ -260,19 +320,22 @@ export default function Home() {
               className="mt-14 flex items-center justify-between"
               role="region"
             >
-              {Array.from([1, 2, 3, 4, 5]).map((item, index) => (
+              {Array.from([1, 2, 3, 4, 5]).map((_, index) => (
                 <div
                   key={index}
-                  className="group w-full px-[30px] pb-10  xl:px-10"
+                  className="w-full px-[30px] pb-10 xl:px-10"
                   aria-label={`Project ${index + 1}`}
                 >
-                  <Image
-                    src={"/SDS.webp"}
-                    alt={""}
-                    width={400}
-                    height={309}
-                    className="object-cover h-[309px] w-[400px] group-hover:scale-110 transition-all duration-700"
-                  />
+                  <div className="relative w-[400px] h-[309px] overflow-hidden">
+                    <Image
+                      src={"/SDS.webp"}
+                      alt=""
+                      width={400}
+                      height={309}
+                      className="object-cover w-full h-full transition-transform duration-700 hover:scale-110"
+                    />
+                  </div>
+
                   <h3 className="text-white pt-3 text-xl font-semibold">
                     Try Boosting
                   </h3>
@@ -292,7 +355,7 @@ export default function Home() {
               their vision, dream big, and execute winning strategies.
             </h2>
             <a
-              className=" text-white relative mt-5 px-8 w-fit flex py-2 bg-primary isolation-auto z-10 before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full before:-left-full before:hover:left-0 before:rounded-full before:bg-purple before:-z-10 before:aspect-square before:hover:scale-150 overflow-hidden before:hover:duration-700"
+              className="text-white relative mt-5 px-8 w-fit flex py-2 bg-primary isolation-auto z-10 before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full before:-left-full before:hover:left-0 before:rounded-full before:bg-purple before:-z-10 before:aspect-square before:hover:scale-150 overflow-hidden before:hover:duration-700"
               href="/studio/"
             >
               About Us
@@ -304,7 +367,7 @@ export default function Home() {
                 decoding="async"
                 data-nimg="1"
                 className="min-w-[15px] ml-2"
-                src="/_next/static/media/arrow_forward.d190dbd2.svg"
+                src="/arrow_right.svg"
                 style={{ color: "transparent" }}
               />
             </a>
@@ -312,13 +375,26 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Section 2 with animation */}
-      <div className="min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Section 2 */}
+      <div className="min-h-screen flex items-center px-14 justify-center overflow-hidden">
         <div
-          ref={section2Ref}
-          className="bg-secondary  flex items-center justify-center"
+          ref={videoContainerRef}
+          className="relative w-full h-full flex items-center justify-center"
         >
-          <h1 className="text-4xl font-bold">Section 2</h1>
+          <div ref={videoRef2} className="bg-secondary ">
+            <video
+              ref={videoRef2View}
+              playsInline
+              preload="auto"
+              autoPlay
+              loop
+              muted
+              className="h-40 w-52 object-cover"
+            >
+              <source src="/video2.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
         </div>
       </div>
 
