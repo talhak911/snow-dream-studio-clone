@@ -16,13 +16,19 @@ const NavBar: React.FC = () => {
   }, [isOpen]);
 
   return (
-    <div>
+    <div className="w-6">
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed top-5 z-[999] right-5 px-6 py-3  text-lg font-bold text-white rounded-md"
+          className=" h-full   text-lg font-bold text-white rounded-md"
         >
-          <Image src="/menu.svg" alt="Menu" width={24} height={24} />
+          <Image
+            className="w-full "
+            src="/menu.svg"
+            alt="Menu"
+            width={24}
+            height={24}
+          />
         </button>
       )}
 

@@ -27,13 +27,4 @@ export const WELCOMES = [
   "Haere mai", // Maori
   "Aloha", // Hawaiian
   "Konnichiwa", // Japanese (Informal)
-  "Annyeonghaseyo", // Korean (Polite)
-  "Salam", // Persian/Farsi
-  "Shikamoo", // Swahili (respectful)
-  "Jambo", // Swahili (informal)
-  "Sawubona", // Zulu
-  "Guten Tag", // German (formal)
-  "Hallo", // German (informal)
-  "Ciao", // Italian (informal)
-  "Hola", // Spanish (informal)
 ];

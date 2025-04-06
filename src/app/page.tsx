@@ -8,12 +8,14 @@ import { useGSAP } from "@gsap/react";
 import Marquee from "react-fast-marquee";
 import { WELCOMES } from "@/constants/constants";
 import NavBar from "@/components/navbar/Navbar";
+import Slider from "@/components/slider/Slider";
+import ClientCards from "@/components/slider/Slider";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
-  const logoRef = useRef<HTMLDivElement>(null);
-  const socialLinksRef = useRef(null);
+  const logoRef = useRef<HTMLImageElement>(null);
+  const welcomesRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef(null);
   const videoRef2 = useRef(null);
   const videoRef2View = useRef(null);
@@ -33,11 +35,11 @@ export default function Home() {
           const progress = self.progress;
           if (progress > 0.5) {
             if (logoRef.current) {
-              logoRef.current.classList.add("text-primary"); // Apply color change
+              logoRef.current.classList.add("bg-primary"); // Apply color change
             }
           } else {
             if (logoRef.current) {
-              logoRef.current.classList.remove("text-primary"); // Remove color
+              logoRef.current.classList.remove("bg-primary"); // Remove color
             }
           }
         },
@@ -99,15 +101,31 @@ export default function Home() {
     logoTl.fromTo(
       logoRef.current,
       {
-        scale: 1,
+        // scale: 1,
+        height: 260,
+        width: 260,
         x: 0,
         y: 0,
       },
       {
-        scale: 0.5,
-        x: -80,
-        y: -80,
+        height: 100,
+        width: 100,
+        color: "white",
+        backgroundColor: "white",
+        // scale: 0.5,
+        // x: -80,
+        // y: -80,
         duration: 1,
+        onComplete: () => {
+          if (welcomesRef.current) {
+            welcomesRef.current.style.opacity = "0"; // Show the welcomesRef
+          }
+        },
+        onReverseComplete: () => {
+          if (welcomesRef.current) {
+            welcomesRef.current.style.opacity = "1"; // Hide the welcomesRef
+          }
+        },
       }
     );
 
@@ -148,9 +166,9 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-secondary/90">
+    <div className="relative min-h-screen w-full bg-secondary/90">
       {/* Fixed Logo */}
-      <div className="fixed flex top-0 left-10 z-50 p-4 px-8">
+      {/* <div className="fixed flex top-0 left-10 z-50 p-4 px-8">
         <div ref={logoRef} className="w-fit">
           <LogoIcon className="size-12 lg:text-secondary relative lg:size-[260px]" />
         </div>
@@ -167,6 +185,94 @@ export default function Home() {
           <div className="h-1 top-6 mr-10 w-full bg-pink-500 absolute" />
         </div>
         <NavBar />
+      </div> */}
+      <div className="fixed lg:top-6 py-4 px-2 max-w-[1800px] mx-auto inset-x-0 z-50 bg-secondary lg:bg-transparent">
+        <div className="flex lg:items-start items-center  w-full justify-between">
+          <img
+            alt="logo_sds"
+            width={50}
+            height={50}
+            decoding="async"
+            data-nimg={1}
+            className="mr-4 block lg:hidden"
+            style={{ color: "transparent" }}
+            src="/logo.svg"
+          />
+          <div ref={logoRef} className="mr-4 relative hidden lg:block ">
+            {/* <div style={{ opacityShow: 0 }}>
+              <img
+                alt="logo"
+                loading="lazy"
+                ref={logoRef}
+                width={360}
+                height={360}
+                decoding="async"
+                data-nimg={1}
+                className="w-full absolute top-0 left-0 right-0 bottom-0 transition-all ease-in-out duration-500"
+                style={{ color: "transparent" }}
+                src="/logo.svg"
+              />
+            </div> */}
+            <div className="w-[100px] lg:w-[260px] " style={{ opacity: 1 }}>
+              <Image
+                alt="logo"
+                ref={logoRef}
+                width={360}
+                height={360}
+                className="w-full absolute top-0 left-0 right-0 bottom-0 transition-all ease-in-out duration-500"
+                // style={{ color: "transparent" }}
+                src="/logo.svg"
+              />
+              {/* <img
+                alt="logo"
+                loading="lazy"
+                width={360}
+                height={360}
+                decoding="async"
+                data-nimg={1}
+                className="w-full absolute top-0 left-0 right-0 bottom-0 transition-all ease-in-out duration-500"
+                style={{ color: "red" }}
+                src="/logo.svg"
+              /> */}
+            </div>
+          </div>
+          <div
+            ref={welcomesRef}
+            className="md:flex hidden transition-all duration-700  justify-between items-center w-full overflow-hidden relative lg:mt-5 mt-1"
+            style={{ opacity: 1 }}
+          >
+            <div className="flex justify-around whitespace-nowrap marquee">
+              {WELCOMES.map((item, index) => (
+                <div key={index} className="text-white px-[3vh] text-[1.8vh]">
+                  {item}
+                </div>
+              ))}
+            </div>
+            <div className="absolute bg-[#b32b7a] mt-[0.5px] h-[5px] left-0 right-0 z-[-1]" />
+          </div>
+          <div className="flex justify-items-end items-center gap-2 ml-3 lg:mt-3">
+            <div className="relative text-left">
+              <button className="group uppercase bg-secondary border border-primary px-2 py-[1px] text-primary hover:bg-primary hover:text-white transition-all flex items-center text-[13px] font-bold mr-2">
+                en
+                <svg
+                  className="ml-2 mr-1 fill-[#05CAFA] group-hover:fill-white"
+                  width={12}
+                  height={8}
+                  viewBox="0 0 12 8"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M5.65375 7.35398L0 1.70024L1.05375 0.646484L5.65375 5.24649L10.2537 0.646484L11.3075 1.70024L5.65375 7.35398Z" />
+                </svg>
+              </button>
+            </div>
+            {/* <div> */}
+            {/* <button className="inline-block mt-1" type="button"> */}
+            <NavBar />
+            {/* </button> */}
+            {/* </div> */}
+          </div>
+        </div>
       </div>
 
       {/* Background Video - Using ref to access video element */}
@@ -183,7 +289,7 @@ export default function Home() {
         Your browser does not support the video tag.
       </video>
 
-      <div className=" hide lg:flex hidden flex-col justify-between space-y-4 fixed z-50 left-14 top-1/2">
+      <div className=" hide lg:flex hidden flex-col justify-between space-y-4 fixed z-50 left-[10%] top-1/2">
         <div style={{ position: "relative", transform: "none" }}>
           <a
             className="group border border-[#626262] hover:border-white w-8 h-8 flex justify-center items-center bg-secondary hover:bg-primary transition-all ease-out duration-500"
@@ -315,8 +421,8 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="min-h-screen py-9 px-14 backdrop-blur-sm flex z-50 items-center justify-center">
-        <div className="sm:w-1/2 w-0"></div>
+      <div className="min-h-screen py-9 px-14 backdrop-blur-sm max-w-[1800px] mx-auto flex z-50 items-center md:justify-end justify-center">
+        {/* <div className="sm:w-1/2 w-0"></div> */}
 
         <div className="w-full md:w-[665px] md:border-l border-[#373737] pl-5 py-8">
           <Marquee pauseOnHover>
@@ -402,8 +508,22 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="min-h-screen bg-green-300/30 backdrop-blur-sm flex items-center justify-center">
+      {/* <div className="min-h-screen bg-green-300/30 backdrop-blur-sm flex items-center justify-center">
         <h1 className="text-4xl font-bold">Section 3</h1>
+
+      </div> */}
+
+      <div className="lg:block hidden  bg-secondary ">
+        <div className="w-full max-w-[1800px] mx-auto relative z-10">
+          <div className=" pt-20 sticky top-0">
+            <h3 className="text-[58px] text-white font-semibold max-w-[60%] text-center mx-auto leading-none">
+              Our Clients Can't Say Anything Bad About Us
+            </h3>
+            <div className="h-[700px] overflow-hidden mt-20 relative flex justify-center gap-20 items-center">
+              <ClientCards />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
