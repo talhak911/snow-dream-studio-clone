@@ -47,8 +47,8 @@ const Clients = () => {
     },
   ];
 
+  // Use the array order such that index 0 is the front (visible) card.
   const [displayedCards, setDisplayedCards] = useState([...allClients]);
-
   const [exitingCards, setExitingCards] = useState<
     {
       name: string;
@@ -58,7 +58,6 @@ const Clients = () => {
       contact?: boolean;
     }[]
   >([]);
-
   const [enteringCard, setEnteringCard] = useState<{
     name: string;
     description?: string;
@@ -66,9 +65,9 @@ const Clients = () => {
     logo?: string;
     contact?: boolean;
   } | null>(null);
-
   const [isAnimating, setIsAnimating] = useState(false);
 
+  // Style arrays (the best style is at index 5)
   const topOffsets = ["-28px", "0", "28px", "60px", "95px", "130px"];
   const scales = ["0.5", "0.6", "0.7", "0.8", "0.9", "1"];
   const bgColors = [
@@ -80,14 +79,18 @@ const Clients = () => {
     "rgb(5, 202, 250)",
   ];
 
+  // Remove the top card (the first element)
   const pop = () => {
     if (isAnimating || displayedCards.length === 0) return;
     setIsAnimating(true);
 
+    // Front card is at index 0
     const cardToExit = displayedCards[0];
     setExitingCards((prev) => [...prev, cardToExit]);
 
+    // Delay before removing to allow the exit animation to play
     setTimeout(() => {
+      // Remove the first element
       setDisplayedCards((prev) => prev.slice(1));
 
       setTimeout(() => {
@@ -99,6 +102,7 @@ const Clients = () => {
     }, 350);
   };
 
+  // Push a new card to the front of the stack (prepend to the array)
   const push = () => {
     if (isAnimating || displayedCards.length >= allClients.length) return;
     setIsAnimating(true);
@@ -114,18 +118,18 @@ const Clients = () => {
     }
 
     const cardToAdd = availableCards[0];
+    // Set entering card and add it immediately
     setEnteringCard(cardToAdd);
+    setDisplayedCards((prev) => [cardToAdd, ...prev]);
 
+    // Remove entering state after the animation finishes
     setTimeout(() => {
-      setDisplayedCards((prev) => [cardToAdd, ...prev]);
-
-      setTimeout(() => {
-        setEnteringCard(null);
-        setIsAnimating(false);
-      }, 700);
-    }, 350);
+      setEnteringCard(null);
+      setIsAnimating(false);
+    }, 100);
   };
 
+  // Compute style so that index 0 (top card) gets the best style (from index 5)
   const getCardStyle = (
     card: {
       name: string;
@@ -136,22 +140,26 @@ const Clients = () => {
     },
     index: number
   ) => {
-    const pos = Math.min(displayedCards.length - index - 1, 5);
+    // Calculate position: top card (index 0) gets pos = 5,
+    // index 1 gets pos = 4, and so on.
+    const pos = index <= 5 ? 5 - index : 0;
 
-    // If it's an exiting card
+    // Exiting card style
     if (exitingCards.some((c) => c.name === card.name)) {
       return {
-        transform: `scale(0.4) translateX(-100%) translateY(100%) rotate(-15deg)`,
+        transform:
+          "scale(0.4) translateX(-100%) translateY(100%) rotate(-15deg)",
         opacity: 0,
         zIndex: 0,
         backgroundColor: bgColors[0],
       };
     }
 
-    // If it's an entering card
+    // Entering card style
     if (enteringCard && enteringCard.name === card.name) {
       return {
-        transform: `scale(1.2) translateX(-100%) translateY(100%) rotate(-15deg)`,
+        transform:
+          "scale(1.2) translateX(-100%) translateY(100%) rotate(-15deg)",
         top: topOffsets[5],
         opacity: 1,
         zIndex: 6,
@@ -165,6 +173,7 @@ const Clients = () => {
       opacity: 1,
       zIndex: pos + 1,
       backgroundColor: bgColors[pos],
+      transition: "transform 0.7s ease, top 0.7s ease, opacity 0.7s ease",
     };
   };
 
@@ -189,12 +198,12 @@ const Clients = () => {
               />
             </button>
             <div className="relative w-[600px] h-full">
-              {/* Render displayed cards */}
+              {/* Use a stable key for each card (client.name) so React keeps the same DOM element */}
               {displayedCards.map((client, index) => (
                 <div
-                  key={`${client.name}-${index}`}
-                  className="w-[600px] h-[400px] p-10 mx-auto opacity-0 absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-700"
+                  key={client.name}
                   style={getCardStyle(client, index)}
+                  className="w-[600px] h-[400px] p-10 mx-auto absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-700"
                 >
                   {client.contact ? (
                     <div className="w-full h-full flex flex-col items-center justify-between p-10">
