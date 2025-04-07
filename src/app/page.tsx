@@ -83,8 +83,8 @@ export default function Home() {
       });
 
       gsap.to(videoRef2View.current, {
-        width: "100vw",
-        height: "100vh",
+        width: "100%",
+        height: "100%",
         borderRadius: "0",
         scrollTrigger: {
           trigger: videoRef2.current,
@@ -110,8 +110,8 @@ export default function Home() {
       {
         height: 100,
         width: 100,
-        color: "white",
-        backgroundColor: "white",
+        color: "#00CFF7",
+        // backgroundColor: "blue",
         // scale: 0.5,
         // x: -80,
         // y: -80,
@@ -198,7 +198,7 @@ export default function Home() {
             style={{ color: "transparent" }}
             src="/logo.svg"
           />
-          <div ref={logoRef} className="mr-4 relative hidden lg:block ">
+          <div className="mr-4 relative hidden lg:block ">
             {/* <div style={{ opacityShow: 0 }}>
               <img
                 alt="logo"
@@ -213,8 +213,12 @@ export default function Home() {
                 src="/logo.svg"
               />
             </div> */}
-            <div className="w-[100px] lg:w-[260px] " style={{ opacity: 1 }}>
-              <Image
+            <div
+              ref={logoRef}
+              className="w-[100px] lg:w-[260px] text-secondary "
+              style={{ opacity: 1 }}
+            >
+              {/* <Image
                 alt="logo"
                 ref={logoRef}
                 width={360}
@@ -222,7 +226,8 @@ export default function Home() {
                 className="w-full absolute top-0 left-0 right-0 bottom-0 transition-all ease-in-out duration-500"
                 // style={{ color: "transparent" }}
                 src="/logo.svg"
-              />
+              /> */}
+              <LogoIcon className="h-full w-full" />
               {/* <img
                 alt="logo"
                 loading="lazy"
@@ -421,7 +426,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="min-h-screen py-9 px-14 backdrop-blur-sm max-w-[1800px] mx-auto flex z-50 items-center md:justify-end justify-center">
+      <div className="min-h-screen py-9 px-2  lg:px-14 backdrop-blur-sm max-w-[1800px] mx-auto flex z-50 items-center md:justify-end justify-center">
         {/* <div className="sm:w-1/2 w-0"></div> */}
 
         <div className="w-full md:w-[665px] md:border-l border-[#373737] pl-5 py-8">
@@ -433,10 +438,10 @@ export default function Home() {
               {Array.from([1, 2, 3, 4, 5]).map((_, index) => (
                 <div
                   key={index}
-                  className="w-full px-[30px] pb-10 xl:px-10"
+                  className="w-full px-3 lg:px-[30px] pb-10 xl:px-10"
                   aria-label={`Project ${index + 1}`}
                 >
-                  <div className="relative w-[200px] sm:w-[400px] h-[309px] overflow-hidden">
+                  <div className="relative w-full sm:w-[400px] h-[309px] overflow-hidden">
                     <Image
                       src={"/SDS.webp"}
                       alt=""
@@ -486,10 +491,10 @@ export default function Home() {
       </div>
 
       {/* Section 2 */}
-      <div className="min-h-screen flex items-center px-14 justify-center overflow-hidden">
+      <div className="min-h-screen flex items-center  px-2 lg:px-14 justify-center overflow-hidden">
         <div
           ref={videoContainerRef}
-          className="relative w-full h-full flex items-center justify-center"
+          className="relative w-full h-1/2 md:h-full flex items-center justify-center"
         >
           <div ref={videoRef2} className="bg-secondary ">
             <video
@@ -499,7 +504,7 @@ export default function Home() {
               autoPlay
               loop
               muted
-              className="h-40 w-52 object-cover"
+              className="h-full lg:h-40 w-full lg:w-52 object-cover"
             >
               <source src="/video2.mp4" type="video/mp4" />
               Your browser does not support the video tag.

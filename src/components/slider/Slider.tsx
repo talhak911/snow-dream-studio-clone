@@ -98,8 +98,8 @@ const Clients = () => {
           prev.filter((card) => card.name !== cardToExit.name)
         );
         setIsAnimating(false);
-      }, 700);
-    }, 350);
+      }, 200);
+    }, 300);
   };
 
   // Push a new card to the front of the stack (prepend to the array)
@@ -183,7 +183,11 @@ const Clients = () => {
         <div className="container pt-20 sticky top-0">
           <div className="h-[700px] overflow-hidden mt-20 relative flex justify-center gap-20 items-center">
             <button
-              className="border w-20 h-20 flex items-center justify-center"
+              className={`border w-20 h-20 flex items-center justify-center ${
+                displayedCards.length >= allClients.length
+                  ? "grayscale"
+                  : "greyscale-0"
+              }`}
               onClick={push}
               disabled={
                 isAnimating || displayedCards.length >= allClients.length
@@ -263,7 +267,9 @@ const Clients = () => {
               ))}
             </div>
             <button
-              className="border w-20 h-20 flex items-center justify-center"
+              className={`border w-20 h-20 flex items-center justify-center ${
+                displayedCards.length === 1 ? "grayscale" : "greyscale-0"
+              }`}
               onClick={pop}
               disabled={displayedCards.length === 1}
             >
