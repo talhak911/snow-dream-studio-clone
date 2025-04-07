@@ -289,7 +289,7 @@ export default function Home() {
         Your browser does not support the video tag.
       </video>
 
-      <div className=" hide lg:flex hidden flex-col justify-between space-y-4 fixed z-50 left-[10%] top-1/2">
+      <div className=" hide lg:flex hidden flex-col justify-between space-y-4 fixed z-20 left-[10%] top-1/2">
         <div style={{ position: "relative", transform: "none" }}>
           <a
             className="group border border-[#626262] hover:border-white w-8 h-8 flex justify-center items-center bg-secondary hover:bg-primary transition-all ease-out duration-500"
@@ -402,7 +402,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="hide w-[62px] fixed top-2/3 z-50 left-[20%] -translate-x-1/2 lg:block hidden">
+      <div className="hide w-[62px] fixed top-2/3 z-20 left-[20%] -translate-x-1/2 lg:block hidden">
         <p className="text-[11px] whitespace-nowrap pb-1 text-white font-light tracking-wide">
           Scroll Down
         </p>
