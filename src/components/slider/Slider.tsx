@@ -228,7 +228,7 @@ const Clients = () => {
                         width={15}
                         height={15}
                         className="min-w-[15px] ml-2"
-                        src="/_next/static/media/arrow_forward.d190dbd2.svg"
+                        src={"/logo.svg"}
                       />
                     </a>
                   </div>
