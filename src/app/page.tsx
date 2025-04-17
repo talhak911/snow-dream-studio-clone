@@ -8,7 +8,6 @@ import { useGSAP } from "@gsap/react";
 import Marquee from "react-fast-marquee";
 import { WELCOMES } from "@/constants/constants";
 import NavBar from "@/components/navbar/Navbar";
-import Slider from "@/components/slider/Slider";
 import ClientCards from "@/components/slider/Slider";
 
 gsap.registerPlugin(ScrollTrigger);
